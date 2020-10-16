@@ -61,6 +61,14 @@
 #define LTE_SHIELD_POWER_PIN 5
 #define LTE_SHIELD_RESET_PIN 6
 
+#define LTE_SHIELD_STANDARD_RESPONSE_TIMEOUT 1000
+#define LTE_SHIELD_SET_BAUD_TIMEOUT 500
+#define LTE_SHIELD_POWER_PULSE_PERIOD 3200
+#define LTE_RESET_PULSE_PERIOD 10000
+#define LTE_SHIELD_IP_CONNECT_TIMEOUT 60000
+#define LTE_SHIELD_POLL_DELAY 1
+#define LTE_SHIELD_SOCKET_WRITE_TIMEOUT 10000
+
 typedef enum
 {
     MNO_INVALID = -1,
@@ -164,6 +172,8 @@ typedef enum
     LTE_SHIELD_MESSAGE_FORMAT_PDU = 0,
     LTE_SHIELD_MESSAGE_FORMAT_TEXT = 1
 } lte_shield_message_format_t;
+
+const char LTE_SHIELD_RESPONSE_OK[] = "OK\r\n";
 
 class LTE_Shield : public Print
 {
@@ -323,6 +333,13 @@ public:
 
     LTE_Shield_error_t gpsRequest(unsigned int timeout, uint32_t accuracy, boolean detailed = true);
 
+    // Send command with an expected (potentially partial) response, store entire response
+    LTE_Shield_error_t sendCommandWithResponse(const char *command, const char *expectedResponse,
+                                               char *responseDest, unsigned long commandTimeout, boolean at = true);
+
+    // Send a command -- prepend AT if at is true
+    boolean sendCommand(const char *command, boolean at);
+
 private:
     HardwareSerial *_hardSerial;
 #ifdef LTE_SHIELD_SOFTWARE_SERIAL_ENABLED
@@ -367,13 +384,6 @@ private:
 
     // Wait for an expected response (don't send a command)
     LTE_Shield_error_t waitForResponse(const char *expectedResponse, uint16_t timeout);
-
-    // Send command with an expected (potentially partial) response, store entire response
-    LTE_Shield_error_t sendCommandWithResponse(const char *command, const char *expectedResponse,
-                                               char *responseDest, unsigned long commandTimeout, boolean at = true);
-
-    // Send a command -- prepend AT if at is true
-    boolean sendCommand(const char *command, boolean at);
 
     LTE_Shield_error_t parseSocketReadIndication(int socket, int length);
     LTE_Shield_error_t parseSocketListenIndication(IPAddress localIP, IPAddress remoteIP);

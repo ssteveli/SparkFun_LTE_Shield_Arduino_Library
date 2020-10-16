@@ -29,14 +29,6 @@
 
 #include <SparkFun_LTE_Shield_Arduino_Library.h>
 
-#define LTE_SHIELD_STANDARD_RESPONSE_TIMEOUT 1000
-#define LTE_SHIELD_SET_BAUD_TIMEOUT 500
-#define LTE_SHIELD_POWER_PULSE_PERIOD 3200
-#define LTE_RESET_PULSE_PERIOD 10000
-#define LTE_SHIELD_IP_CONNECT_TIMEOUT 60000
-#define LTE_SHIELD_POLL_DELAY 1
-#define LTE_SHIELD_SOCKET_WRITE_TIMEOUT 10000
-
 // ## Suported AT Commands
 // ### General
 const char LTE_SHIELD_COMMAND_AT[] = "AT";      // AT "Test"
@@ -73,8 +65,6 @@ const char LTE_SHIELD_SEND_TEXT[] = "+CMGS";      // Send SMS message
 const char LTE_SHIELD_GPS_POWER[] = "+UGPS";
 const char LTE_SHIELD_GPS_REQUEST_LOCATION[] = "+ULOC";
 const char LTE_SHIELD_GPS_GPRMC[] = "+UGRMC";
-
-const char LTE_SHIELD_RESPONSE_OK[] = "OK\r\n";
 
 // CTRL+Z and ESC ASCII codes for SMS message sends
 const char ASCII_CTRL_Z = 0x1A;
